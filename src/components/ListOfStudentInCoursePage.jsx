@@ -1,5 +1,5 @@
 import { Flex, Heading, SimpleGrid, Button } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import ListOfCourses from "./Tables/ListOfCourses";
 import ListOfRegisteredCourses from "./Tables/ListOfRegisteredCourses";
 import ListOfStudents from "./Tables/ListOfStudents";
@@ -8,6 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 function ListOfStudentInCoursePage() {
   let navigate = useNavigate();
+
+  const [chosenCourse, setSelectedCourse] = useState({courseId: 0, name: "Select a course"});
+
+  function selectCourse(course) {
+    setSelectedCourse({courseId: course.courseId, name: course.name});
+  }
 
   return (
     <div>
@@ -25,13 +31,13 @@ function ListOfStudentInCoursePage() {
             <Heading mb={10} textAlign={"center"}>
               List of Courses
             </Heading>
-            <ListOfCourses />
+            <ListOfCourses action={selectCourse} />
           </Flex>
           <Flex w="full" p={4} direction={"column"}>
             <Heading textAlign={"center"}>
-              List of Student in (Selected Course)
+              List of Student in {chosenCourse.name}
             </Heading>
-            <ListOfStudents />
+            <ListOfStudents courseId={chosenCourse.courseId} />
           </Flex>
         </SimpleGrid>
       </Flex>

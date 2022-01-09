@@ -1,7 +1,19 @@
 import { Table, Thead, Tr, Th, Td, Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import listStudentsInCourse from "../../services/listStudentsInCourse";
 
-function ListOfStudents() {
+function ListOfStudents({courseId}) {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      const tempData = await listStudentsInCourse(courseId);
+      setData(tempData);
+    }
+
+    getData();
+  }, [])
+
   const dummyData = [
     {
       id: "Course 1",

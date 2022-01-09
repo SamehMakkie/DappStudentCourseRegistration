@@ -1,7 +1,20 @@
 import { Table, Thead, Tr, Th, Td, Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import listOfRegisteredCoursesByStudent from "../../services/listOfRegisteredCoursesByStudent";
+import removeCourse from "../../services/removeCourse";
 
-function ListOfRegisteredCourses() {
+function ListOfRegisteredCourses(action) {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    async function getData(){
+      const tempData = await listOfRegisteredCoursesByStudent()
+      setData(tempData)
+    }
+    
+    getData()
+  }, [])
+
   const dummyData = [
     {
       name: "Course 1",
@@ -29,7 +42,7 @@ function ListOfRegisteredCourses() {
         </Tr>
         {dummyData.map((course, index) => {
           return (
-            <Tr key={index} _hover={{ bgColor: "red.400", color: "white" }}>
+            <Tr key={index} _hover={{ bgColor: "red.400", color: "white" }} onClick={() => { action(course) }}>
               <Td>{course.name}</Td>
               <Td>{course.teacher}</Td>
             </Tr>
