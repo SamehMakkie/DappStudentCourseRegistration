@@ -1,33 +1,45 @@
 import { Table, Thead, Tr, Th, Td, Flex } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import listStudentsInCourse from "../../services/listStudentsInCourse";
 
-function ListOfStudents({courseId}) {
+import { ContractContext } from "../../context/contractContext";
+
+function ListOfStudents({ courseId }) {
   const [data, setData] = useState([]);
+  const [contract] = useContext(ContractContext);
 
   useEffect(() => {
     async function getData() {
-      const tempData = await listStudentsInCourse(courseId);
+      const tempData = await listStudentsInCourse(courseId, contract);
       setData(tempData);
     }
 
     getData();
-  }, [])
+  }, []);
 
-  const dummyData = [
-    {
-      id: "Course 1",
-      name: "Student 1",
-    },
-    {
-      id: "Course 2",
-      name: "Student 2",
-    },
-    {
-      id: "Course 3",
-      name: "Student 3",
-    },
-  ];
+  useEffect(() => {
+    async function getData() {
+      const tempData = await listStudentsInCourse(courseId, contract);
+      setData(tempData);
+    }
+
+    getData();
+  }, [contract]);
+
+  // const dummyData = [
+  //   {
+  //     id: "Course 1",
+  //     name: "Student 1",
+  //   },
+  //   {
+  //     id: "Course 2",
+  //     name: "Student 2",
+  //   },
+  //   {
+  //     id: "Course 3",
+  //     name: "Student 3",
+  //   },
+  // ];
 
   return (
     <Table borderRadius={"md"}>
@@ -36,7 +48,7 @@ function ListOfStudents({courseId}) {
           <Th>Id</Th>
           <Th>Name</Th>
         </Tr>
-        {dummyData.map((course, index) => {
+        {data.map((course, index) => {
           return (
             <Tr key={index} _hover={{ bgColor: "gray.400", color: "white" }}>
               <Td>{course.id}</Td>

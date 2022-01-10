@@ -1,18 +1,24 @@
 import { Flex, Heading, SimpleGrid, Button } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ListOfCourses from "./Tables/ListOfCourses";
 import ListOfRegisteredCourses from "./Tables/ListOfRegisteredCourses";
 import ListOfStudents from "./Tables/ListOfStudents";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 
-function ListOfStudentInCoursePage() {
+import { ContractContext } from "../context/contractContext";
+
+function ListOfStudentInCoursePage({ account }) {
+  const [contract] = useContext(ContractContext);
   let navigate = useNavigate();
 
-  const [chosenCourse, setSelectedCourse] = useState({courseId: 0, name: "Select a course"});
+  const [chosenCourse, setSelectedCourse] = useState({
+    courseId: 0,
+    name: "Select a course",
+  });
 
   function selectCourse(course) {
-    setSelectedCourse({courseId: course.courseId, name: course.name});
+    setSelectedCourse({ courseId: course.courseId, name: course.name });
   }
 
   return (
@@ -37,7 +43,10 @@ function ListOfStudentInCoursePage() {
             <Heading textAlign={"center"}>
               List of Student in {chosenCourse.name}
             </Heading>
-            <ListOfStudents courseId={chosenCourse.courseId} />
+            <ListOfStudents
+              courseId={chosenCourse.courseId}
+              account={account}
+            />
           </Flex>
         </SimpleGrid>
       </Flex>
